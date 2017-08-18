@@ -8,8 +8,11 @@ import axios from 'axios';
 import VueSweetAlert from 'vue-sweetalert';
 import VueRouter from 'vue-router';
 import Routes from './router/index';
+import { getHeaderMain } from './config';
 
 window.axios = axios;
+
+Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 
@@ -41,13 +44,23 @@ const routes = new VueRouter({
     routes: Routes
 });
 
+const authUser = JSON.parse(window.localStorage.getItem('authUser'));
+
+// This logic adds a header in the ajax for axios with the Authorization headers!
+// This will set the axios for all the pages as it is loaded in the main.js
+if(authUser != null && authUser.access_token){
+    window.axios.defaults.headers.common = {
+        'Authorization': getHeaderMain().Authorization
+    };
+}
+
 routes.beforeEach((to, from, next) => {
     document.title = to.meta.title;
-    const authUser = JSON.parse(window.localStorage.getItem('authUser'));
 
-    if(to.name == "Login"){
+    if(to.name == "Login" || to.name == "Register"){
         if(authUser != null && authUser.access_token){
             next({ name: 'Dashboard'});
+            return false;
         }
     }
 
@@ -58,9 +71,10 @@ routes.beforeEach((to, from, next) => {
             if(to.meta.requiresAdmin){
                 if(authUser.type < 3){
                     next({ name: 'Dashboard'});
+                    return false;
                 }
             }
-            
+
             next();
         }else{
             // redirect to the route with the name of Login!

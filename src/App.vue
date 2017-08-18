@@ -6,6 +6,7 @@
         <router-view></router-view>
         <!-- /.container-fluid -->
         <footer class="footer text-center" v-if="this.$route.meta.dashboard == undefined ? true : false"> 2017 &copy; EaseMyPay Theme Admin brought to you by Bajee </footer>
+        <modals></modals>
     </div>
 </template>
 
@@ -15,6 +16,7 @@ import preloader from '@/components/partials/preloader.vue';
 
 import appNavbar from '@/components/partials/navbar.vue';
 import appLeftNavbar from '@/components/partials/leftNavbar.vue';
+import modals from '@/components/partials/pop/pop.vue';
 
 export default {
     name: 'app',
@@ -23,6 +25,7 @@ export default {
         preloader: preloader,
         appNavbar: appNavbar,
         appLeftNavbar: appLeftNavbar,
+        modals: modals
     },
 
     data(){

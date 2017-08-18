@@ -42,9 +42,14 @@
                             <li>
                                 <router-link :to="{ name: 'Dashboard', params: {} }">Welcome</router-link>
                             </li>
-                            <li> <a href="javascript:void(0)">Distributor</a> </li>
-                            <li> <a href="javascript:void(0)">Client</a> </li>
-                            <li> <a href="javascript:void(0)">Retailer</a> </li>
+                            <li v-if="(isAdmin)"> <a href="javascript:void(0)">Distributor</a> </li>
+                            <li v-if="(isAdmin)"> <a href="javascript:void(0)">Client</a> </li>
+                            <li v-if="(isAdmin)"> <a href="javascript:void(0)">Retailer</a> </li>
+                            <li v-if="(isDistributor)"> <a href="javascript:void(0)">Recharge A Retailer</a> </li>
+                            <li v-if="(isClient)"> <a href="javascript:void(0)">Recharge a Distributor</a> </li>
+                            <li v-if="(isRetailer)">
+                                <router-link :to="{ name: 'recharge.retailer', params: {} }">Pay A Fee</router-link>
+                            </li>
                         </ul>
                     </li>
                 </li>
@@ -57,7 +62,8 @@
                         </span>
                     </a>
                     <ul v-bind:class="{ in: isManage }" class="nav nav-second-level collapse">
-                        <li v-show="(isAdmin)">
+                        <!-- v-if doesn't works with the matis dropdown so v-show is used! -->
+                        <li v-if="(isAdmin)">
                             <a href="javascript:void(0)" class="waves-effect" v-bind:class="{ active: manage.distributor }">
                                 Distributor<span class="fa arrow"></span>
                             </a>
@@ -79,7 +85,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li v-show="(isAdmin || isClient)">
+
+                        <li v-if="(isAdmin || isClient)">
                             <a href="javascript:void(0)" class="waves-effect" v-bind:class="{ active: manage.client }">
                                 Clients<span class="fa arrow"></span>
                             </a>
@@ -102,7 +109,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li v-show="(isAdmin || isDistributor)">
+                        <li v-if="(isAdmin || isDistributor)">
                             <a href="javascript:void(0)" class="waves-effect" v-bind:class="{ active: manage.retailer }">
                                 Retailer<span class="fa arrow"></span>
                             </a>
@@ -291,6 +298,13 @@ export default {
 
         this.setActiveLinks();
         require("../../../static/bower_components/sidebar-nav/dist/sidebar-nav.min.js");
+
+    },
+
+    // the reason we are using on updated life cycle is because the computation is done after mounted life cycle and before
+    // updated and as a result the computed properties which determines the user types is not yet defined by the time
+    // metis menu is called on the left sidebar and as a result the navs doesn't work properly.
+    updated(){
         $("#side-menu").metisMenu();
     }
 }

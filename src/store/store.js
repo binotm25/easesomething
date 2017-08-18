@@ -4,6 +4,8 @@ import userStore from './user/userStore';
 import distributorStore from './distributor/distributorStore';
 import clientStore from './clients/clientsStore';
 import retailerStore from './retailers/retailerStore';
+import instituteStore from './institute/instituteStore';
+import popInfoStore from './popInfo/popInfoStore';
 
 Vue.use(Vuex);
 
@@ -41,11 +43,26 @@ export default new Vuex.Store({
         userStore,
         distributorStore,
         clientStore,
-        retailerStore
+        retailerStore,
+        instituteStore,
+        popInfoStore
     },
 
     state: {
         month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+
+        banks : ['State Bank of India', 'ICICI', 'Axis', 'HDFC', 'Bank Of India', 'Bank Of Baroda', 'United Bank of India', 'Allahabad Bank', 'ING Vyashaya', 'Punjab and Sind Bank']
+    },
+
+    getters:{
+        getBanks(state)
+        {
+            return state.banks;
+        },
+
+        getMonths(state){
+            return state.month;
+        }
     },
 
     strict: debug

@@ -14,6 +14,9 @@ import singleClient from '@/components/main/client/single';
 import retailerAdd from '@/components/main/retailer/add';
 import totalTableretailer from '@/components/main/retailer/total';
 import singleRetailer from '@/components/main/retailer/single';
+import feePaymentRetailer from '@/components/main/retailer/recharge';
+
+import paymentInvoice from '@/components/partials/invoice/feePayment';
 
 export default[
     { path: '/', name: 'Home', component: Home, meta: {title: 'Home', dashboard: false} },
@@ -30,8 +33,15 @@ export default[
     { path: '/manage/client/total', name: 'client.total', component: totalTableClient, meta: {title: 'Total Clients', requiresAuth: true} },
     { path: '/manage/client/single/:userId', name: 'client.single', component: singleClient, meta: {title: 'Client ', requiresAuth: true} },
 
+    // Retailers Pages
+
     { path: '/manage/retailer/add', name: 'retailer.add', component: retailerAdd, meta: {title: 'Add Retailer', requiresAuth: true} },
     { path: '/manage/retailer/total', name: 'retailer.total', component: totalTableretailer, meta: {title: 'Total Retailers', requiresAuth: true} },
     { path: '/manage/retailer/single/:userId', name: 'retailer.single', component: singleRetailer, meta: {title: 'Retailer ', requiresAuth: true} },
+
+    { path: '/fee/payment', name: 'recharge.retailer', component: feePaymentRetailer, meta: {title: 'Fee Payment', requiresAuth: true, requiresRetailer: true} },
+
+
+    { path: '/fee/payment/invoice', name: 'payment.invoice', component: paymentInvoice, meta: {title:'Payment Invoice', requiresAuth: true} }
 
 ];
